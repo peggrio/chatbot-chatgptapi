@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const errorHandler = require("./middleWare/errorMiddleware")
+const planRoute = require("./routes/planRoute")
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(cors({
 
 // Route middleware
 app.use("/chatbot", chatBotRoute);
+app.use("/package", planRoute);
 
 // Error middleware
 app.use(errorHandler);

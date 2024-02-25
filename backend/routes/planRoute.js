@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { chatBot } = require("../models/chatbot")
+const { plan } = require("../controllers/planController")
 
-router.post("/", chatBot);
+router.post("/register", plan);
 
 module.exports = router;

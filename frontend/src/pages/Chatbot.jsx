@@ -42,9 +42,6 @@ export const Chatbot = () => {
         }
 
         try {
-            console.log('====================================');
-            console.log(apiReqBody);
-            console.log('====================================');
             const response = await axios.post(
                 `${BACKEND_URL}/chatbot`,
                 apiReqBody,

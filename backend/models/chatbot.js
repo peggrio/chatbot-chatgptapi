@@ -23,7 +23,6 @@ const chatBot = asyncHandler(async (req, res) => {
         const content = JSON.stringify(req.body.content);
         // Call OpenAI API to generate response
         const completion = await openai.chat.completions.create({
-            //messages: [{ role: "system", content: `${content}` }],//
             messages: [
                 { role: "system", content: `${systemRole}` },
                 { role: "user", content: `${content}` }],
