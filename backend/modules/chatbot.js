@@ -6,6 +6,8 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
+const systemRole = process.env.SYSTEM_ROLE
+
 const chatBot = asyncHandler(async (req, res) => {
     if (!req.body || Object.keys(req.body).length === 0) {
         res.status(400);
@@ -21,9 +23,13 @@ const chatBot = asyncHandler(async (req, res) => {
         const content = JSON.stringify(req.body.content);
         // Call OpenAI API to generate response
         const completion = await openai.chat.completions.create({
-            messages: [{ role: "system", content: `${content}` }],
+            //messages: [{ role: "system", content: `${content}` }],//
+            messages: [
+                { role: "system", content: `${systemRole}` },
+                { role: "user", content: `${content}` }],
             model: "gpt-3.5-turbo",
         });
+        res.status(200)
         res.send(completion.choices[0])
     } catch (err) {
         res.status(400);

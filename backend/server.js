@@ -23,6 +23,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+//remember when deploy to other domain, add more domains here!!!
+app.use(cors({
+    origin: ["http://localhost:3000",],
+    credentials: true
+}));
+
 // Route middleware
 app.use("/chatbot", chatBotRoute);
 
