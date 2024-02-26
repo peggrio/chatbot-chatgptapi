@@ -12,7 +12,7 @@ export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const Chatbot = () => {
     const [typing, setTyping] = useState(false);
 
-    const [messages, setMessage] = useState([
+    const [messages, setMessages] = useState([
         {
             message: "Hello, this is Traval Leader, your reliable travel butler, what can I help you today?",
             sender: "chatGPT"
@@ -26,16 +26,16 @@ export const Chatbot = () => {
             direction: "outgoing"
         }
 
-        const newMessages = [...messages, newMessage];// all the old messages + the new message
-        setMessage(newMessages);
+        const allMessages = [...messages, newMessage];// all the old messages + the new message
+        setMessages(allMessages);
 
         //set a typing indicator
         setTyping(true);
 
-        await proccessMessage(message);
+        await proccessMessage(allMessages, message);
     }
 
-    const proccessMessage = async (chatMessage) => {
+    const proccessMessage = async (allMessages, chatMessage) => {
 
         const apiReqBody = {
             "content": chatMessage
@@ -49,12 +49,18 @@ export const Chatbot = () => {
             );
             if (response.statusText === 'OK') {
                 console.log(response.data.message.content)
+                setMessages(
+                    [...allMessages, {
+                        message: response.data.message.content,
+                        sender: "chatGPT"
+                    }]
+                );
+                setTyping(false);
             }
         } catch (error) {
             console.log(error.message);
         }
     }
-
 
 
     return (
@@ -66,7 +72,7 @@ export const Chatbot = () => {
                     <ChatContainer>
                         <MessageList typingIndicator={typing ? <TypingIndicator /> : null}>
                             {messages.map((message, i) => {
-                                return <Message className="haha-input" key={i} model={message} />
+                                return <Message key={i} model={message} />
                             })}
                         </MessageList>
                         <MessageInput placeholder="Type message here" onSend={handleSend} />

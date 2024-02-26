@@ -1,39 +1,34 @@
 //this file define the schema of travel package
 
-const mongoose = require("mongoose");
+module.exports = (sequelize, DataTypes) => {
 
-const planSchema = mongoose.Schema({
-    depart: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    destination: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    stops: {
-        type: String,
-        required: true,
-        default: "Non-stop",
-        trim: true
-    },
-    cost: {
-        type: String,
-        required: true
-    },
-    airline: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    season: {
-        type: String,
-        required: true,
-        trim: true
+    const Plan = sequelize.define("plans", {
+        depart: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        destination: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        stops: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            default: "Non-stop",
+        },
+        cost: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        airline: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        season: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        }
     }
-})
-
-const Plan = mongoose.model("Plan", planSchema);
-module.exports = Plan;
+    )
+    return Plan
+}

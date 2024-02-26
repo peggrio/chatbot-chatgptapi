@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler")
-const Plan = require("../models/plan");
+const db = require('../config/sequelize')
 const seasons = ["spring", "summer", "fall", "winter"];
+
+const Plan = db.plans
 
 const checkSeasons = (season) => {
     season = season.toLowerCase();
