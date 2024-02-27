@@ -1,7 +1,6 @@
 const chatBotRoute = require("./routes/chatBotRoute")
 const dotenv = require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const errorHandler = require("./middleWare/errorMiddleware")
@@ -11,13 +10,13 @@ const app = express();
 
 const PORT = process.env.PORT || 5003;
 
-//Connect to DB and start server
-
-mongoose.connect(process.env.MONGO_URI).then(() => {
+try {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`)
     })
-}).catch((err) => console.log(err))
+} catch (error) {
+    console.log(error)
+}
 
 // Middlewares
 app.use(express.json())

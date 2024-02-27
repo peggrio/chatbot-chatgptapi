@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "message": "Hi, how are you?",
+        "sql": "no"
+    },
+    {
+        "id": 2,
+        "message": "What's the distance between London and Hongkong?",
+        "sql": "no"
+    },
+    {
+        "id": 3,
+        "message": "Hey, can you tell me the flight and corresponding price if I fly from LA to Sydney?",
+        "sql": "yes"
+    },
+    {
+        "id": 4,
+        "message": "Give me all the options that if I fly from Tokyo to London through Japan Airline?",
+        "sql": "yes"
+    },
+    {
+        "id": 5,
+        "message": "Hey, I want to travel in Spring, how much it would cost me to take United Airlines to fly from Salt lake city to Boston?",
+        "sql": "yes"
+    },
+    {
+        "id": 6,
+        "message": "How far the Beijing from here?",
+        "sql": "no"
+    },
+    {
+        "id": 7,
+        "message": "Hey, tell me all package options you could offer",
+        "sql": "yes"
+    },
+    {
+        "id": 8,
+        "message": "If I want to take the cheapest flight from Seattle to London, how many stops will it possibly take?",
+        "sql": "yes"
+    },
+    {
+        "id": 9,
+        "message": "Wow, your help is amazing! Thanks!",
+        "sql": "no"
+    },
+    {
+        "id": 10,
+        "message": "what's the weather today?",
+        "sql": "no"
+    },
+    {
+        "id": 11,
+        "message": "tell me the difference between Sydney and San Jose",
+        "sql": "no"
+    }
+]

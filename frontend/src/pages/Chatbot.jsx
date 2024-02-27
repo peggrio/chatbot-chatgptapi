@@ -48,7 +48,7 @@ export const Chatbot = () => {
                 { withCredentials: true }
             );
             if (response.statusText === 'OK') {
-                console.log(response.data.message.content)
+                // console.log(response.data.message.content)
                 setMessages(
                     [...allMessages, {
                         message: response.data.message.content,

@@ -27,7 +27,15 @@ const plan = asyncHandler(async (req, res) => {
     }
 
     //check if the plan already exists
-    const planExist = await Plan.findOne({ depart, destination, stops, cost, airline, season })
+    const planExist = await Plan.findOne({
+        where: {
+            depart: depart,
+            destination: destination,
+            stops: stops,
+            airline: airline,
+            season: season
+        }
+    })
 
     if (planExist) {
         res.status(400)

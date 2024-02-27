@@ -19,12 +19,44 @@ const chatBot = asyncHandler(async (req, res) => {
         throw new Error("Content required")
     }
 
+    //first, train chatGPT to make it distinguish whether it is a sql related question
+    //reply 'yes' or 'no'
+    const fs = require('fs');
+
+    // Define a function to read the file and parse the JSON data
+    const readSampleMessages = async () => {
+        try {
+
+            const data = await fs.promises.readFile('./trainData/sampleMessages.json', 'utf8');
+            const sampleMessages = JSON.parse(data);
+
+            return sampleMessages.map(sampleMessage => {
+                return {
+                    "message": sampleMessage.message,
+                    "isSQLconvertible": sampleMessage.sql
+                };
+            });
+        } catch (err) {
+            console.error('Error reading file:', err);
+            throw err;
+        }
+    };
+
     try {
+        const prompt = await readSampleMessages();
+
         const content = JSON.stringify(req.body.content);
         // Call OpenAI API to generate response
+        // console.log("prompt:", prompt);
         const completion = await openai.chat.completions.create({
             messages: [
-                { role: "system", content: `${systemRole}` },
+                {
+                    role: "system", content: `you are a travel agent, your job is to distinguish whether a coming message\n
+              represents a general question or can convert to a sql to query our own database.\n
+              If yes, means the question could be convert to a sql, then reply with "yes", otherwise reply with "no".\n
+              Here are some examples: \n
+              ${prompt}`
+                },
                 { role: "user", content: `${content}` }],
             model: "gpt-3.5-turbo",
         });
@@ -34,6 +66,22 @@ const chatBot = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error(`Error when calling api, ${err.message}`);
     }
+
+    // try {
+    //     const content = JSON.stringify(req.body.content);
+    //     // Call OpenAI API to generate response
+    //     const completion = await openai.chat.completions.create({
+    //         messages: [
+    //             { role: "system", content: `${ systemRole }` },
+    //             { role: "user", content: `${ content }` }],
+    //         model: "gpt-3.5-turbo",
+    //     });
+    //     res.status(200)
+    //     res.send(completion.choices[0])
+    // } catch (err) {
+    //     res.status(400);
+    //     throw new Error(`Error when calling api, ${ err.message }`);
+    // }
 })
 
 module.exports = {
