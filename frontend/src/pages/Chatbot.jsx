@@ -4,6 +4,7 @@ import { GoDependabot } from "react-icons/go";
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import "./Chatbot.css"
 import axios from "axios";
+import DOMPurify from 'dompurify';
 
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from "@chatscope/chat-ui-kit-react"
 
@@ -20,8 +21,11 @@ export const Chatbot = () => {
     ])
 
     const handleSend = async (message) => {
+        // Sanitize the message to remove any HTML formatting
+        const sanitizedMessage = DOMPurify.sanitize(message);
+        console.log("sanitizedMessage: ", sanitizedMessage);
         const newMessage = {
-            message: message,
+            message: sanitizedMessage,
             sender: "user",
             direction: "outgoing"
         }
@@ -40,6 +44,7 @@ export const Chatbot = () => {
         const apiReqBody = {
             "content": chatMessage
         }
+        console.log("message input:", chatMessage);
 
         try {
             const response = await axios.post(

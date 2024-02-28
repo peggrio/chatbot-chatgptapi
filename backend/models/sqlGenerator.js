@@ -1,5 +1,6 @@
 const { OpenAI } = require("openai");
 const dotenv = require("dotenv").config();
+const { QueryTypes } = require('sequelize');
 const asyncHandler = require("express-async-handler");
 const db = require('../config/sequelize');
 
@@ -19,15 +20,13 @@ const sqlGenerator = asyncHandler(async (content) => {
     })
 
     const query = completion.choices[0].message.content
-    console.log(query);
+    console.log("query is here!", query);
     try {
-        const records = await db.sequelize.query(`${query}`, {
-            model: plans,
-            mapToModel: true // pass true here if you have any mapped fields
-        });
+        const records = await db.sequelize.query(query.toString(), { type: QueryTypes.SELECT });
+
         console.log("records:", records);
     } catch (error) {
-        throw new Error(`Error when query from database, ${err.message}`);
+        throw new Error(`Error when query from database, ${error.message}`);
     }
 })
 

@@ -47,14 +47,14 @@ const chatBot = asyncHandler(async (req, res) => {
 
         const content = JSON.stringify(req.body.content);
         // Call OpenAI API to generate response
-        // console.log("prompt:", prompt);
+        console.log("prompt:", prompt);
         const completion = await openai.chat.completions.create({
+            //Remember, only query sql is allowed, update, create or delete sql are not allowed, they should go to "no".\n
             messages: [
                 {
                     role: "system", content: `you are a travel agent, your job is to distinguish whether a coming message\n
               represents a general question or can convert to a sql to query our own database.\n
               If yes, means the question could be convert to a sql, then reply with "yes", otherwise reply with "no".\n
-              Remember, only query sql is allowed, update, create or delete sql are not allowed, they should go to "no".\n
               Here are some examples: \n
               ${prompt}`
                 },
@@ -65,6 +65,7 @@ const chatBot = asyncHandler(async (req, res) => {
         const ans = completion.choices[0].message.content
         if (ans == "no") {
             try {
+                console.log("no!");
                 const completion = await openai.chat.completions.create({
                     messages: [
                         { role: "system", content: `${systemRole}` },
@@ -78,6 +79,7 @@ const chatBot = asyncHandler(async (req, res) => {
                 throw new Error(`Error when calling general api, ${err.message}`);
             }
         } else {
+            console.log("yes!");
             try {
                 //call sql generator
                 chatboxColor = "yellow"
