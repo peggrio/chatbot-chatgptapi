@@ -64,8 +64,8 @@ const chatBot = asyncHandler(async (req, res) => {
 
         const ans = completion.choices[0].message.content
         if (ans == "no") {
+            console.log("no!");
             try {
-                console.log("no!");
                 const completion = await openai.chat.completions.create({
                     messages: [
                         { role: "system", content: `${systemRole}` },
@@ -83,7 +83,7 @@ const chatBot = asyncHandler(async (req, res) => {
             try {
                 //call sql generator
                 chatboxColor = "yellow"
-                const completion = sqlGenerator(content, chatboxColor)
+                const completion = await sqlGenerator(content)
                 res.status(200)
                 res.send(completion.choices[0])
             } catch (err) {

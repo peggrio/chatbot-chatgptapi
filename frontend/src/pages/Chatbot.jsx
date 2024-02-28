@@ -4,7 +4,6 @@ import { GoDependabot } from "react-icons/go";
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import "./Chatbot.css"
 import axios from "axios";
-import DOMPurify from 'dompurify';
 
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from "@chatscope/chat-ui-kit-react"
 
@@ -22,8 +21,9 @@ export const Chatbot = () => {
 
     const handleSend = async (message) => {
         // Sanitize the message to remove any HTML formatting
-        const sanitizedMessage = DOMPurify.sanitize(message);
-        console.log("sanitizedMessage: ", sanitizedMessage);
+        var doc = new DOMParser().parseFromString(message, 'text/html');
+        const sanitizedMessage = doc.body.textContent || "";
+
         const newMessage = {
             message: sanitizedMessage,
             sender: "user",
@@ -36,7 +36,7 @@ export const Chatbot = () => {
         //set a typing indicator
         setTyping(true);
 
-        await proccessMessage(allMessages, message);
+        await proccessMessage(allMessages, sanitizedMessage);
     }
 
     const proccessMessage = async (allMessages, chatMessage) => {
