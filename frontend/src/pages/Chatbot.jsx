@@ -14,7 +14,7 @@ export const Chatbot = () => {
 
     const [messages, setMessages] = useState([
         {
-            message: "Hello, this is Traval Leader, your reliable travel butler, what can I help you today?",
+            message: "Hello, this is Traval Leader, your reliable travel butler, how can I help you today?",
             sender: "chatGPT"
         }
     ])

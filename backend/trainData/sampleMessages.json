@@ -53,5 +53,10 @@
         "id": 11,
         "message": "tell me the difference between Sydney and San Jose",
         "sql": "no"
+    },
+    {
+        "id": 12,
+        "message": "Hey, create a new flight record from Hongkong to London",
+        "sql": "no"
     }
 ]
