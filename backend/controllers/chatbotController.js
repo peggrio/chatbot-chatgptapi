@@ -27,7 +27,8 @@ const chatBot = asyncHandler(async (req, res) => {
     const sql_answer = async (content) => {
         try {
             const completion_sql = await sqlGenerator(content)
-            return completion_sql.choices[0].message.content
+            if (completion_sql.length == 0) return ""
+            return completion_sql
         } catch (err) {
             res.status(400);
             throw new Error(`Error when calling sql generator api, ${err.message}`);
@@ -43,27 +44,35 @@ const chatBot = asyncHandler(async (req, res) => {
                     { role: "user", content: `${content}` }],
                 model: "gpt-3.5-turbo",
             });
-            return completion_general.choices[0].message.content
+            return completion_general
         } catch (err) {
             res.status(400);
             throw new Error(`Error when calling general api, ${err.message}`);
         }
     }
 
-
     //third, send to answers to comparator for choose
     try {
-        console.log(sql_answer(content));
-        console.log(general_answer(content));
+        const sql_result = await sql_answer(content)
+        const general_result = await general_answer(content)
 
-        const completion = comparator(sql_answer, general_answer)
-        const final_answer = completion.choices[0].message.content
-        if (final_answer == "sql") {
+        const sql_answer_string = sql_result.length == 0 ? "" : sql_result.choices[0].message.content;
+        const general_answer_string = general_result.choices[0].message.content;
+
+        const decision = await comparator(content, sql_answer_string, general_answer_string)
+
+        if (decision == "yes") {
             res.status(200)
-            res.send(completion_sql.choices[0])
+            console.log('====================================');
+            console.log("sql!!");
+            console.log('====================================');
+            res.send(sql_result.choices[0])
         } else {
             res.status(200)
-            res.send(completion_general.choices[0])
+            console.log('====================================');
+            console.log("general!!");
+            console.log('====================================');
+            res.send(general_result.choices[0])
         }
     } catch (err) {
         res.status(400);

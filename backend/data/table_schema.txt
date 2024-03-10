@@ -1,8 +1,8 @@
-Given the following SQL tables, your job is to write queries given a user’s request.
+Given the following SQL tables, your job is to write queries given a user’s request. If there seems multiple questions, use joint query.
 
 CREATE TABLE CSYE7380.flights (
   id int,
-  airline int,
+  airline varchar(45),
   date_of_journey varchar(45),
   source varchar(45),
   destination varchar(45),
@@ -27,5 +27,19 @@ CREATE TABLE CSYE7380.hotels (
   PRIMARY KEY (id)
 );
 
-the 'date_of_journey' attribute has following format: DD/MM/YYYY;
-the 'duration' attribute has following format: xhxxm(for example, 2h50m)
+Here is an example row in table CSYE7380.flights: 
+'786', 'Air India', '01/03/2019', 'Banglore', 'New Delhi', '08:50', '23:25', '14h 35m', '2 stops', '1 Short layover', '26743'
+
+Here is an example row in table CSYE7380.hotels:
+'1','Vividus','4133','Gandhi Nagar | 2.0 km from Kempegowda Bus Station','4.4',' (Very Good)','Bangalore','[\'Free Parking\', \'Business Centre\', \'Conference Room\']'
+
+
+The 'date_of_journey' attribute has following format: DD/MM/YYYY;
+The 'duration' attribute has following format: xhxxm(for example, 2h50m);
+If "delhi" detected, it should be queried as "new delhi"
+
+Here is an example query when responding to question "can you tell me the cheapest price when fly from banglore to new delhi through air india? also do you have any suggestions about the hotel?":
+`SELECT MIN(f.price) as cheapest_price, h.name as hotel_name, h.price as hotel_price
+FROM CSYE7380.flights f
+JOIN CSYE7380.hotels h ON f.destination = REPLACE(h.city,'delhi','new delhi')
+WHERE f.source = 'Banglore' AND f.destination = 'New Delhi' AND f.airline = 'Air India';`

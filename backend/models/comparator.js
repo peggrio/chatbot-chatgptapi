@@ -10,85 +10,30 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const comparator = asyncHandler(async (sql_answer, general_answer) => {
-    console.log("content:", content);
-    try {
-        const schema = await fs.promises.readFile('./data/table_schema.txt', 'utf8');
-        const systemSchemaQuery = schema;
+const comparator = asyncHandler(async (content, sql_answer, general_answer) => {
+    console.log("sql_answer:", sql_answer);
+    console.log("general_answer:", general_answer);
+    if (sql_answer.length == 0) {
+        return "no"
+    }
 
+    try {
         const completion = await openai.chat.completions.create({
             messages: [
-                {
-                    role: "system", content: `${systemSchemaQuery.toString()}`
-                },
-                { role: "user", content: "Write a SQL query which computes the average total order value for all orders on 2023-04-01." }],
+                { role: "user", content: "The question is:" + `${content}` + ", the potential response is:" + `${sql_answer}` + ", do you think the response is relevant to the question? Return 'yes' or 'no'" }
+            ],
             model: "gpt-3.5-turbo",
         });
+        console.log('====================================');
+        console.log(completion.choices[0].message.content.toLowerCase());
+        console.log('====================================');
 
-        const query = completion.choices[0].message.content;
-        console.log("query is here!", query);
+        return completion.choices[0].message.content.toLowerCase();
+
     } catch (err) {
-        throw new Error(`Error when reading database schema, ${err.message}`);
+        throw new Error(`Error when calling comparator api, ${err.message}`);
     }
 
-
-
-
-
-    fs.writeFile('./data/table_schema.txt', (err, schema) => {
-        if (err) {
-            res.status(400);
-            throw new Error(`Error when reading database schema, ${err.message}`);
-        } else {
-            const systemSchemaQuery = schema;
-
-            const completion = openai.chat.completions.create({
-                messages: [
-                    {
-                        role: "system", content: `${systemSchemaQuery.toString()}`
-                    },
-                    { role: "user", content: "Write a SQL query which computes the average total order value for all orders on 2023-04-01." }],
-                model: "gpt-3.5-turbo",
-            })
-
-            const query = completion.choices[0].message.content
-            console.log("query is here!", query);
-
-        }
-    })
-
-    const completion = await openai.chat.completions.create({
-        messages: [
-            {
-                role: "system", content: `${systemSchemaQuery.toString()}`
-            },
-            { role: "user", content: "Write a SQL query which computes the average total order value for all orders on 2023-04-01." }],
-        model: "gpt-3.5-turbo",
-    })
-
-    const query = completion.choices[0].message.content
-    console.log("query is here!", query);
-    try {
-        const records = await db.sequelize.query(query.toString(), { type: QueryTypes.SELECT });
-        console.log("records:", records);
-
-        //based on the records and input content, call API again, generate the answer and return
-
-        const completion_2 = await openai.chat.completions.create({
-            messages: [
-                {
-                    role: "system", content: `You are a travel agent, this is the answer you have for the question: ${JSON.stringify(records)} , reply the question with this answer, start with "After query from our database", keep it simple`
-                },
-                { role: "user", content: `${content}` }],
-            model: "gpt-3.5-turbo",
-        })
-        const ans = completion_2.choices[0].message.content
-        console.log("ans: ", ans);
-        return completion_2
-
-    } catch (error) {
-        throw new Error(`Error when query from database, ${error.message}`);
-    }
 })
 
 module.exports = {

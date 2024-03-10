@@ -25,14 +25,13 @@ const sqlGenerator = asyncHandler(async (content) => {
         });
 
         const query = completion.choices[0].message.content;
-        console.log("query is here!", query);
-
 
         try {
             const records = await db.sequelize.query(query.toString(), { type: QueryTypes.SELECT });
             console.log("records:", records);
-            if (!records) {
-                return "empty"
+            if (records.length == 0) {
+                console.log("hey! empty");
+                return ""
             }
 
             //based on the records and input content, call API again, generate the answer and return
@@ -51,7 +50,7 @@ const sqlGenerator = asyncHandler(async (content) => {
 
         } catch (error) {
             //based on the query, an error happened, means we need put it to general question
-            return "empty";
+            return "";
         }
 
     } catch (err) {
