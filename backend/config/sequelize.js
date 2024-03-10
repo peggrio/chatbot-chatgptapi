@@ -26,7 +26,8 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.plans = require('../models/plan')(sequelize, DataTypes)
+db.hotels = require('../models/hotels')(sequelize, DataTypes)
+db.flights = require('../models/flights')(sequelize, DataTypes)
 
 db.sequelize.sync({
     force: false

@@ -2,33 +2,36 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-    const Plan = sequelize.define("plans", {
-        depart: {
+    const Hotel = sequelize.define("hotels", {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        destination: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        stops: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            default: "Non-stop",
-        },
-        cost: {
+        price: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        airline: {
+        location: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        season: {
+        rating: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        review: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        city: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        special: {
             type: DataTypes.STRING,
             allowNull: false,
         }
     }
     )
-    return Plan
+    return Hotel
 }

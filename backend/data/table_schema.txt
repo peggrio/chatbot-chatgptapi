@@ -1,0 +1,31 @@
+Given the following SQL tables, your job is to write queries given a user’s request.
+
+CREATE TABLE CSYE7380.flights (
+  id int,
+  airline int,
+  date_of_journey varchar(45),
+  source varchar(45),
+  destination varchar(45),
+  dep_time varchar(45),
+  arrival_time varchar(45),
+  duration varchar(45),
+  total_stops varchar(45),
+  additional_info varchar(45),
+  price int,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE CSYE7380.hotels (
+  id int,
+  name varchar(45),
+  price int,
+  location varchar(255),
+  rating varchar(45),
+  review varchar(45),
+  city varchar(45),
+  special varchar(255),
+  PRIMARY KEY (id)
+);
+
+the 'date_of_journey' attribute has following format: DD/MM/YYYY;
+the 'duration' attribute has following format: xhxxm(for example, 2h50m)
