@@ -10,7 +10,7 @@ const openai = new OpenAI({
 });
 
 const sqlGenerator = asyncHandler(async (content) => {
-    console.log("content:", content);
+
     try {
         const schema = await fs.promises.readFile('./data/table_schema.txt', 'utf8');
         const systemSchemaQuery = schema;
@@ -28,22 +28,42 @@ const sqlGenerator = asyncHandler(async (content) => {
 
         try {
             const records = await db.sequelize.query(query.toString(), { type: QueryTypes.SELECT });
-            console.log("records:", records);
+            console.log("records.length:", records.length);
             if (records.length == 0) {
                 console.log("hey! empty");
                 return ""
             }
+            //limit the return answers in 2
+            let manyRecord
+            if (records.length > 2) {
+                manyRecord = JSON.stringify(records[1]) + JSON.stringify(records[2]);
+            }
+
+            const recordTooManyTag = records.length > 2 ? true : false;
 
             //based on the records and input content, call API again, generate the answer and return
 
-            const completion_2 = await openai.chat.completions.create({
-                messages: [
-                    {
-                        role: "system", content: `You are a travel agent, this is the answer you have for the question: ${JSON.stringify(records)} , reply the question with this answer, start with "After query from our database", keep it simple`
-                    },
-                    { role: "user", content: `${content}` }],
-                model: "gpt-3.5-turbo",
-            })
+            let completion_2
+            if (recordTooManyTag) {
+                completion_2 = await openai.chat.completions.create({
+                    messages: [
+                        {
+                            role: "system", content: `You are a travel agent, this are the answers you have for the question: ${JSON.stringify(manyRecord)} , reply the question with this answer, start with "After query from our database, we pick some options for you: ", keep it simple`
+                        },
+                        { role: "user", content: `${content}` }],
+                    model: "gpt-3.5-turbo",
+                })
+            } else {
+                completion_2 = await openai.chat.completions.create({
+                    messages: [
+                        {
+                            role: "system", content: `You are a travel agent, this is the answer you have for the question: ${JSON.stringify(records)} , reply the question with this answer, start with "After query from our database", keep it simple`
+                        },
+                        { role: "user", content: `${content}` }],
+                    model: "gpt-3.5-turbo",
+                })
+            }
+
             const ans = completion_2.choices[0].message.content
             console.log("ans: ", ans);
             return completion_2

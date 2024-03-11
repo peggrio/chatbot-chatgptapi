@@ -51,9 +51,19 @@ const chatBot = asyncHandler(async (req, res) => {
         }
     }
 
-    //third, send to answers to comparator for choose
+    //Third, send to answers to comparator for choose
+
+    //call sql_answer twice to improve the accuracy
+    const callTwice = async (content) => {
+        let ans = await sql_answer(content);
+        if (ans.length == 0) {
+            ans = await sql_answer(content);
+        }
+        return ans;
+    }
+
     try {
-        const sql_result = await sql_answer(content)
+        const sql_result = await callTwice(content)
         const general_result = await general_answer(content)
 
         const sql_answer_string = sql_result.length == 0 ? "" : sql_result.choices[0].message.content;
