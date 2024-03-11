@@ -24,16 +24,12 @@ const comparator = asyncHandler(async (content, sql_answer, general_answer) => {
             ],
             model: "gpt-3.5-turbo",
         });
-        console.log('====================================');
-        console.log(completion.choices[0].message.content.toLowerCase());
-        console.log('====================================');
 
         return completion.choices[0].message.content.toLowerCase();
 
     } catch (err) {
         throw new Error(`Error when calling comparator api, ${err.message}`);
     }
-
 })
 
 module.exports = {
