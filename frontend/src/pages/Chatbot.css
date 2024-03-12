@@ -44,6 +44,20 @@
     cursor: pointer;
 }
 
+.cs-button--attachment,
+.cs-button--send {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.cs-message-separator {
+    color: #C396AB;
+}
+
+.cs-message-separator::before,
+.cs-message-separator::after {
+    background-color: #C396AB;
+}
+
 .cs-message--outgoing .cs-message__content {
     color: rgba(0, 0, 0);
     background-color: #BC8DA0;

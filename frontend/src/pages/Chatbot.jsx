@@ -15,7 +15,7 @@ import ava4 from "../assets/ava4.svg"
 import ava5 from "../assets/ava5.svg"
 import axios from "axios";
 
-import { Avatar, MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from "@chatscope/chat-ui-kit-react"
+import { Avatar, MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator, MessageSeparator } from "@chatscope/chat-ui-kit-react"
 
 export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -111,6 +111,10 @@ export const Chatbot = () => {
                 <MainContainer>
                     <ChatContainer>
                         <MessageList typingIndicator={typing ? <TypingIndicator /> : null}>
+                            <MessageSeparator
+                                as="h2"
+                                content="Wednesday, 13 March 2024"
+                            />
                             {messages.map((message, i) => {
                                 if (message.sender === "user") {
                                     return <Message key={i} model={message} >
