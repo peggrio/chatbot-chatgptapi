@@ -1,7 +1,7 @@
 /* Override the default theme color */
 .cs-message__content {
     color: rgba(0, 0, 0, 1);
-    background-color: plum;
+    background-color: #D9D0DE;
     font-size: 1em;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
@@ -9,15 +9,17 @@
 .cs-message-input__content-editor-wrapper {
     box-sizing: border-box;
     position: relative;
-    background-color: #A3D189;
+    background-color: #C396AB;
     margin: 0;
     padding: 0.6em 0.9em;
     border-radius: 0.7em;
     flex-grow: 1;
+    color: rgba(255, 255, 250);
 }
 
 .cs-message-input__content-editor {
-    background-color: #A3D189;
+    background-color: #C396AB;
+    color: rgba(255, 255, 250);
 }
 
 .robot-title {
@@ -43,8 +45,8 @@
 }
 
 .cs-message--outgoing .cs-message__content {
-    color: rgba(0, 0, 0, .87);
-    background-color: #6ea9d7;
+    color: rgba(0, 0, 0);
+    background-color: #BC8DA0;
     border-radius: 0.7em 0.7em 0.7em 0.7em;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }

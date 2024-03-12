@@ -20,11 +20,13 @@ const comparator = asyncHandler(async (content, sql_answer, general_answer) => {
     try {
         const completion = await openai.chat.completions.create({
             messages: [
-                { role: "user", content: "The question is:" + `${content}` + ", the potential response is:" + `${sql_answer}` + ", do you think the response is relevant to the question? Return 'yes' or 'no'" }
+                { role: "user", content: "The question is:" + `${content}` + ", after query in our database, the potential response is:" + `${sql_answer}` + ", do you think the response can answer the question with detailed information? Only return 'yes' or 'no'" }
             ],
             model: "gpt-3.5-turbo",
         });
-
+        console.log('====================================');
+        console.log(completion.choices[0].message.content.toLowerCase());
+        console.log('====================================');
         return completion.choices[0].message.content.toLowerCase();
 
     } catch (err) {

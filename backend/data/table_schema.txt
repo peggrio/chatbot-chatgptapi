@@ -36,10 +36,10 @@ Here is an example row in table CSYE7380.hotels:
 
 The 'date_of_journey' attribute has following format: DD/MM/YYYY;
 The 'duration' attribute has following format: xhxxm(for example, 2h50m);
-If "new delhi" were detected, it should be queried as "delhi"
+If "new delhi" were detected in the question, it should be queried as "delhi"
 
 Here is an example query when responding to question "can you tell me the cheapest price when fly from banglore to new delhi through air india? also do you have any suggestions about the hotel?":
-`SELECT MIN(f.price) as cheapest_price, h.name as hotel_name, h.price as hotel_price
+`SELECT MIN(f.price) AS cheapest_price, h.name AS suggested_hotel, h.price AS hotel_price
 FROM CSYE7380.flights f
-JOIN CSYE7380.hotels h ON f.destination = REPLACE(h.city,'delhi','new delhi')
-WHERE f.source = 'Banglore' AND f.destination = 'New Delhi' AND f.airline = 'Air India';`
+JOIN CSYE7380.hotels h ON f.destination = 'delhi' AND f.source = 'banglore' AND f.airline = 'air india'
+ORDER BY cheapest_price, suggested_hotel`

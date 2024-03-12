@@ -28,7 +28,7 @@ const sqlGenerator = asyncHandler(async (content) => {
 
         try {
             const records = await db.sequelize.query(query.toString(), { type: QueryTypes.SELECT });
-            console.log("records.length:", records.length);
+            console.log("records:", JSON.stringify(records));
             if (records.length == 0) {
                 console.log("hey! empty");
                 return ""
