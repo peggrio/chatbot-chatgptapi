@@ -3,6 +3,7 @@
     color: rgba(0, 0, 0, 1);
     background-color: plum;
     font-size: 1em;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .cs-message-input__content-editor-wrapper {
@@ -17,4 +18,33 @@
 
 .cs-message-input__content-editor {
     background-color: #A3D189;
+}
+
+.robot-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+
+    transition: color 0.5s, font-size 0.5s, transform 0.5s;
+    /* Smooth transition for hover effect */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Prettier font */
+}
+
+.robot-title:hover {
+    color: #029756;
+    /* Change color on hover */
+    font-size: 28px;
+    /* Scale up on hover */
+}
+
+.cs-avatar {
+    cursor: pointer;
+}
+
+.cs-message--outgoing .cs-message__content {
+    color: rgba(0, 0, 0, .87);
+    background-color: #6ea9d7;
+    border-radius: 0.7em 0.7em 0.7em 0.7em;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
