@@ -22,7 +22,7 @@ const chatBot = asyncHandler(async (req, res) => {
         throw new Error("Content required")
     }
 
-    if (!req.body.content) {
+    if (!req.body.history) {
         res.status(400)
         throw new Error("History missed")
     }
