@@ -73,5 +73,15 @@
         "id": 14,
         "message": "How many airlines operated by India?",
         "sql": "no"
+    },
+    {
+        "id": 15,
+        "message": "I need to fly from Banglore to new delhi in June, can you provide some hotels for me? I need the rate above 4.0.",
+        "sql": "yes"
+    },
+    {
+        "id": 16,
+        "message": "Based on your database, how many hotels in India has review with 'very good'?",
+        "sql": "yes"
     }
 ]

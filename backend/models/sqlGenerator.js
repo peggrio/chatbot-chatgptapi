@@ -18,9 +18,11 @@ const sqlGenerator = asyncHandler(async (content) => {
         const completion = await openai.chat.completions.create({
             messages: [
                 {
-                    role: "system", content: `${systemSchemaQuery.toString()}`
+                    role: "system", content: `${schema.toString()}`
                 },
-                { role: "user", content: "Based on the question:" + `${content}` + ", write a SQL query, return the SQL only, do not include explanations. " }],
+                {
+                    role: "user", content: `${content}`
+                }],
             model: "gpt-3.5-turbo",
         });
 

@@ -105,10 +105,8 @@ export const Chatbot = () => {
     return (
         <div >
             <div class="robot-title">
-                <p>Hello this is chatbot</p>
-                1. add distinguish module
-                2. add memory module
-                <GoDependabot size={35} />
+                {/* <p>Hello this is chatbot</p> */}
+                <GoDependabot size={35} class="icon" />
             </div>
             <div>
                 <MainContainer>

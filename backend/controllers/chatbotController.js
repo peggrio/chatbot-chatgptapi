@@ -22,12 +22,18 @@ const chatBot = asyncHandler(async (req, res) => {
         throw new Error("Content required")
     }
 
+    if (!req.body.content) {
+        res.status(400)
+        throw new Error("History missed")
+    }
+
     const content = JSON.stringify(req.body.content);
+    const history = JSON.stringify(req.body.history);
 
     //first, query database for an answer
-    const sql_answer = async (content) => {
+    const sql_answer = async (content, history) => {
         try {
-            const completion_sql = await sqlGenerator(content)
+            const completion_sql = await sqlGenerator(content, history)
             if (completion_sql.length == 0) return ""
             return completion_sql
         } catch (err) {
@@ -37,11 +43,14 @@ const chatBot = asyncHandler(async (req, res) => {
     }
 
     //second, query openAI for a general answer
-    const general_answer = async (content) => {
+    const general_answer = async (content, history) => {
         try {
+            console.log('====================================');
+            console.log("history:", history);
+            console.log('====================================');
             const completion_general = await openai.chat.completions.create({
                 messages: [
-                    { role: "system", content: "based on your knowledge, answer the question" },
+                    { role: "system", content: "based on your knowledge, answer the question. Sometimes the user's question need to trace back to previous conversation. These are the previous conversation:" + `${history}` + "in previous conversation, if the sender is 'user', means it was sent by user, otherwise it was the response from you" },
                     { role: "user", content: `${content}` }],
                 model: "gpt-3.5-turbo",
             });
@@ -55,10 +64,10 @@ const chatBot = asyncHandler(async (req, res) => {
     //Third, send to answers to comparator for choose
 
     //call sql_answer twice to improve the accuracy
-    const callTwice = async (content) => {
-        let ans = await sql_answer(content);
+    const callTwice = async (content, history) => {
+        let ans = await sql_answer(content, history);
         if (ans.length == 0) {
-            ans = await sql_answer(content);
+            ans = await sql_answer(content, history);
         }
         return ans;
     }
@@ -66,10 +75,10 @@ const chatBot = asyncHandler(async (req, res) => {
     try {
         const result = await comparator_2(content)
         if (result === "sql") {
-            const sqlResult = await callTwice(content);
+            const sqlResult = await callTwice(content, history);
             if (sqlResult.length === 0) {
                 console.log("SQL was called but no result found, resorting to general answer.");
-                const generalResult = await general_answer(content);
+                const generalResult = await general_answer(content, history);
                 res.status(200).send(generalResult.choices[0]);
             } else {
                 console.log("SQL answer found.");
@@ -77,7 +86,7 @@ const chatBot = asyncHandler(async (req, res) => {
             }
         } else {
             console.log("General answer.");
-            const generalResult = await general_answer(content);
+            const generalResult = await general_answer(content, history);
             res.status(200).send(generalResult.choices[0]);
         }
 

@@ -52,7 +52,7 @@ const comparator_2 = asyncHandler(async (contents) => {
             model: "gpt-3.5-turbo",
         });
         console.log('====================================');
-        console.log("haha", completion.choices[0].message.content);
+        console.log("the distinguish said:", completion.choices[0].message.content);
         console.log('====================================');
         return completion.choices[0].message.content
 

@@ -31,6 +31,7 @@
     /* Smooth transition for hover effect */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     /* Prettier font */
+    margin-top: 20px
 }
 
 .robot-title:hover {
@@ -63,4 +64,34 @@
     background-color: #BC8DA0;
     border-radius: 0.7em 0.7em 0.7em 0.7em;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes jump {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+        /* Keep the icon at the same position */
+    }
+
+    40% {
+        transform: translateY(-15px);
+        /* Jump up */
+    }
+
+    60% {
+        transform: translateY(-10px);
+        /* Rebound slightly */
+    }
+}
+
+.icon {
+    /* Set the icon's initial position */
+    transform: translateY(0);
+    /* Apply the animation with a duration of 1 second, set to repeat 3 times */
+    animation: jump 5s ease-in-out infinite;
+    height: 50
 }
