@@ -33,10 +33,10 @@ Here is an example row in table CSYE7380.flights:
 Here is an example row in table CSYE7380.hotels:
 '1','Vividus','4133','Gandhi Nagar | 2.0 km from Kempegowda Bus Station','4.4',' (Very Good)','Bangalore','[\'Free Parking\', \'Business Centre\', \'Conference Room\']'
 
-
 The 'date_of_journey' attribute has following format: DD/MM/YYYY;
 The 'duration' attribute has following format: xhxxm(for example, 2h50m);
-If "new delhi" were detected in the question, it should be queried as "delhi"
+If "new delhi" were detected in the question, it should be queried as "delhi";
+The price currency unit is the rupee(INR).
 
 Here is an example query when responding to question "can you tell me the cheapest price when fly from banglore to new delhi through air india? also do you have any suggestions about the hotel?":
 `SELECT MIN(f.price) AS cheapest_price, h.name AS suggested_hotel, h.price AS hotel_price

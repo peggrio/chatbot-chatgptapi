@@ -3,6 +3,7 @@ const dotenv = require("dotenv").config();
 const asyncHandler = require("express-async-handler")
 const { sqlGenerator } = require("../models/sqlGenerator")
 const { comparator } = require("../models/comparator")
+const { comparator_2 } = require("../models/comparator_2")
 const fs = require('fs');
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -63,27 +64,41 @@ const chatBot = asyncHandler(async (req, res) => {
     }
 
     try {
-        const sql_result = await callTwice(content)
-        const general_result = await general_answer(content)
-
-        const sql_answer_string = sql_result.length == 0 ? "" : sql_result.choices[0].message.content;
-        const general_answer_string = general_result.choices[0].message.content;
-
-        const decision = await comparator(content, sql_answer_string, general_answer_string)
-
-        if (decision == "yes") {
-            res.status(200)
-            console.log('====================================');
-            console.log("sql!!");
-            console.log('====================================');
-            res.send(sql_result.choices[0])
+        const result = await comparator_2(content)
+        if (result === "sql") {
+            const sqlResult = await callTwice(content);
+            if (sqlResult.length === 0) {
+                console.log("SQL was called but no result found, resorting to general answer.");
+                const generalResult = await general_answer(content);
+                res.status(200).send(generalResult.choices[0]);
+            } else {
+                console.log("SQL answer found.");
+                res.status(200).send(sqlResult.choices[0]);
+            }
         } else {
-            res.status(200)
-            console.log('====================================');
-            console.log("general!!");
-            console.log('====================================');
-            res.send(general_result.choices[0])
+            console.log("General answer.");
+            const generalResult = await general_answer(content);
+            res.status(200).send(generalResult.choices[0]);
         }
+
+        // const sql_answer_string = sql_result.length == 0 ? "" : sql_result.choices[0].message.content;
+        // const general_answer_string = general_result.choices[0].message.content;
+
+        // const decision = await comparator(content, sql_answer_string, general_answer_string)
+
+        // if (decision == "yes") {
+        //     res.status(200)
+        //     console.log('====================================');
+        //     console.log("sql!!");
+        //     console.log('====================================');
+        //     res.send(sql_result.choices[0])
+        // } else {
+        //     res.status(200)
+        //     console.log('====================================');
+        //     console.log("general!!");
+        //     console.log('====================================');
+        //     res.send(general_result.choices[0])
+        // }
     } catch (err) {
         res.status(400);
         throw new Error(`Error when calling comparator api, ${err.message}`);

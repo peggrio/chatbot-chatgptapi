@@ -28,18 +28,21 @@ const sqlGenerator = asyncHandler(async (content) => {
 
         try {
             const records = await db.sequelize.query(query.toString(), { type: QueryTypes.SELECT });
-            console.log("records:", JSON.stringify(records));
+            //console.log("records:", JSON.stringify(records));
             if (records.length == 0) {
                 console.log("hey! empty");
                 return ""
             }
             //limit the return answers in 2
             let manyRecord
-            if (records.length > 2) {
-                manyRecord = JSON.stringify(records[1]) + JSON.stringify(records[2]);
+            if (records.length > 3) {
+                manyRecord = JSON.stringify(records[1]) + JSON.stringify(records[2]) + JSON.stringify(records[3]);
+                console.log('====================================');
+                console.log("manyRecord:", JSON.stringify(manyRecord));
+                console.log('====================================');
             }
 
-            const recordTooManyTag = records.length > 2 ? true : false;
+            const recordTooManyTag = records.length > 3 ? true : false;
 
             //based on the records and input content, call API again, generate the answer and return
 
@@ -48,7 +51,7 @@ const sqlGenerator = asyncHandler(async (content) => {
                 completion_2 = await openai.chat.completions.create({
                     messages: [
                         {
-                            role: "system", content: `You are a travel agent, this are the answers you have for the question: ${JSON.stringify(manyRecord)} , reply the question with this answer, start with "After query from our database, we pick some options for you: ", keep it simple`
+                            role: "system", content: `You are a travel agent, this are the answers you have for the question: ${JSON.stringify(manyRecord)} , reply the question with this answer(you should include all the answer), start with "After query from our database, we pick some options for you: ", keep it simple`
                         },
                         { role: "user", content: `${content}` }],
                     model: "gpt-3.5-turbo",

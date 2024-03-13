@@ -6,22 +6,22 @@
     },
     {
         "id": 2,
-        "message": "What's the distance between London and Hongkong?",
+        "message": "What's the distance between Chennai and Kolkata?",
         "sql": "no"
     },
     {
         "id": 3,
-        "message": "Hey, can you tell me the flight and corresponding price if I fly from LA to Sydney?",
+        "message": "Hey, what hotels could I choose if I want to stay Mumbai for one night in May?",
         "sql": "yes"
     },
     {
         "id": 4,
-        "message": "Give me all the options that if I fly from Tokyo to London through Japan Airline?",
+        "message": "I want to fly from banglore to delhi in May, what's the options?",
         "sql": "yes"
     },
     {
         "id": 5,
-        "message": "Hey, I want to travel in Spring, how much it would cost me to take United Airlines to fly from Salt lake city to Boston?",
+        "message": "Hey, I want to travel in Spring, how much it would cost me to take United Jet Airways to fly from Delhi to Cochin?",
         "sql": "yes"
     },
     {
@@ -36,7 +36,7 @@
     },
     {
         "id": 8,
-        "message": "If I want to take the cheapest flight from Seattle to London, how many stops will it possibly take?",
+        "message": "If I want to take the cheapest flight from Kolkata to Banglore, how many stops will it possibly take?",
         "sql": "yes"
     },
     {
@@ -57,6 +57,21 @@
     {
         "id": 12,
         "message": "Hey, create a new flight record from Hongkong to London",
+        "sql": "no"
+    },
+    {
+        "id": 12,
+        "message": "can you tell me the cheapest price when fly from banglore to new delhi through air india? also do you have any suggestions about the hotel?",
+        "sql": "yes"
+    },
+    {
+        "id": 13,
+        "message": "Hello?",
+        "sql": "no"
+    },
+    {
+        "id": 14,
+        "message": "How many airlines operated by India?",
         "sql": "no"
     }
 ]

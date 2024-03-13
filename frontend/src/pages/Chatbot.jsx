@@ -75,9 +75,10 @@ export const Chatbot = () => {
     const proccessMessage = async (allMessages, chatMessage) => {
 
         const apiReqBody = {
-            "content": chatMessage
+            "content": chatMessage,
+            "history": allMessages
         }
-        console.log("message input:", chatMessage);
+        console.log("apiReqBody:", apiReqBody);
 
         try {
             const response = await axios.post(
@@ -104,7 +105,9 @@ export const Chatbot = () => {
     return (
         <div >
             <div class="robot-title">
-                Hello this is chatbot
+                <p>Hello this is chatbot</p>
+                1. add distinguish module
+                2. add memory module
                 <GoDependabot size={35} />
             </div>
             <div>
@@ -136,7 +139,6 @@ export const Chatbot = () => {
                                     </Message>
                                 }
                             })}
-
                         </MessageList>
                         <MessageInput placeholder="Type message here" onSend={handleSend} />
                     </ChatContainer>
