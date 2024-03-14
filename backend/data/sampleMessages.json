@@ -83,5 +83,10 @@
         "id": 16,
         "message": "Based on your database, how many hotels in India has review with 'very good'?",
         "sql": "yes"
+    },
+    {
+        "id": 17,
+        "message": "I need to fly from Banglore to new delhi in June, can you provide some hotels for me?",
+        "sql": "yes"
     }
 ]

@@ -35,6 +35,9 @@ const sqlGenerator = asyncHandler(async (content) => {
                 console.log("hey! empty");
                 return ""
             }
+            console.log('====================================');
+            console.log("records:", records);
+            console.log('====================================');
             //limit the return answers in 2
             let manyRecord
             if (records.length > 3) {
@@ -75,6 +78,7 @@ const sqlGenerator = asyncHandler(async (content) => {
 
         } catch (error) {
             //based on the query, an error happened, means we need put it to general question
+            console.log(error);
             return "";
         }
 

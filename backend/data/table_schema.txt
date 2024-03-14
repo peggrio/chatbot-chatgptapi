@@ -1,4 +1,4 @@
-Given the following SQL tables, your job is to write queries given a user’s request. Return the SQL only, do not include explanations. If there seems multiple questions, use joint query.
+Given the following SQL tables, your job is to write queries given a user’s request. Return the SQL only, start with "SELECT ", do not include explanations. If there seems multiple questions, use joint query.
 
 CREATE TABLE CSYE7380.flights (
   id int,

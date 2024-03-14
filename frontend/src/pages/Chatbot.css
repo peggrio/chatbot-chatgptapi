@@ -30,12 +30,11 @@
     transition: color 0.5s, font-size 0.5s, transform 0.5s;
     /* Smooth transition for hover effect */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Prettier font */
     margin-top: 20px
 }
 
 .robot-title:hover {
-    color: #029756;
+    color: #C396AB;
     /* Change color on hover */
     font-size: 28px;
     /* Scale up on hover */

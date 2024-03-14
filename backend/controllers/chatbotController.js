@@ -31,9 +31,9 @@ const chatBot = asyncHandler(async (req, res) => {
     const history = JSON.stringify(req.body.history);
 
     //first, query database for an answer
-    const sql_answer = async (content, history) => {
+    const sql_answer = async (content) => {
         try {
-            const completion_sql = await sqlGenerator(content, history)
+            const completion_sql = await sqlGenerator(content)
             if (completion_sql.length == 0) return ""
             return completion_sql
         } catch (err) {
@@ -45,9 +45,6 @@ const chatBot = asyncHandler(async (req, res) => {
     //second, query openAI for a general answer
     const general_answer = async (content, history) => {
         try {
-            console.log('====================================');
-            console.log("history:", history);
-            console.log('====================================');
             const completion_general = await openai.chat.completions.create({
                 messages: [
                     { role: "system", content: "based on your knowledge, answer the question. Sometimes the user's question need to trace back to previous conversation. These are the previous conversation:" + `${history}` + "in previous conversation, if the sender is 'user', means it was sent by user, otherwise it was the response from you" },
@@ -64,10 +61,10 @@ const chatBot = asyncHandler(async (req, res) => {
     //Third, send to answers to comparator for choose
 
     //call sql_answer twice to improve the accuracy
-    const callTwice = async (content, history) => {
-        let ans = await sql_answer(content, history);
+    const callTwice = async (content) => {
+        let ans = await sql_answer(content);
         if (ans.length == 0) {
-            ans = await sql_answer(content, history);
+            ans = await sql_answer(content);
         }
         return ans;
     }
@@ -75,7 +72,7 @@ const chatBot = asyncHandler(async (req, res) => {
     try {
         const result = await comparator_2(content)
         if (result === "sql") {
-            const sqlResult = await callTwice(content, history);
+            const sqlResult = await sql_answer(content);
             if (sqlResult.length === 0) {
                 console.log("SQL was called but no result found, resorting to general answer.");
                 const generalResult = await general_answer(content, history);
