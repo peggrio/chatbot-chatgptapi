@@ -23,7 +23,7 @@ const Rash_generator = asyncHandler(async (req, res) => {
 
     // Generate a UUID (v4 version)
     const uuid = uuidv4();
-    const pythonProcess = spawn('python3', ['./models/test.py', content, uuid]);
+    const pythonProcess = spawn('python3', ['./models/rashImageGenerationModel.py', content, uuid]);
 
     pythonProcess.stdout.on('data', (data) => {
         console.log(`Python output: ${data}`);
