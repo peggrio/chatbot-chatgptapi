@@ -1,10 +1,11 @@
-const chatBotRoute = require("./routes/chatBotRoute")
+const chatBotRoute = require("./routes/chatBotRoute");
+const rashRoute = require("./routes/rashRoute");
 const dotenv = require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const errorHandler = require("./middleWare/errorMiddleware")
-const planRoute = require("./routes/planRoute")
+const errorHandler = require("./middleWare/errorMiddleware");
+const planRoute = require("./routes/planRoute");
 
 const app = express();
 
@@ -12,16 +13,16 @@ const PORT = process.env.PORT || 5003;
 
 try {
     app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`)
-    })
+        console.log(`Server running on port ${PORT}`);
+    });
 } catch (error) {
-    console.log(error)
+    console.log(error);
 }
 
 // Middlewares
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //remember when deploy to other domain, add more domains here!!!
 app.use(cors({
@@ -32,6 +33,7 @@ app.use(cors({
 // Route middleware
 app.use("/chatbot", chatBotRoute);
 app.use("/package", planRoute);
+app.use("/rash_generator", rashRoute);
 
 // Error middleware
 app.use(errorHandler);

@@ -24,10 +24,12 @@ export const Rash_generator = () => {
 
     const [messages, setMessages] = useState([
         {
-            message: "Hello, this is Traval Leader, your reliable travel butler, how can I help you today?",
+            message: "Hello, this is Rash generator, please provide the symptom",
             sender: "chatGPT"
         }
     ]);
+
+    const [imageData, setImageData] = useState(""); // State variable to store Base64 image data
 
     const handleSend = async (message) => {
         // Sanitize the message to remove any HTML formatting
@@ -72,25 +74,29 @@ export const Rash_generator = () => {
         setAvatarRobots(options[randomIndex]);
     };
 
+    const imgElement = document.createElement('img');
+
     const proccessMessage = async (allMessages, chatMessage) => {
 
         const apiReqBody = {
             "content": chatMessage,
-            "history": allMessages
         };
         console.log("apiReqBody:", apiReqBody);
 
         try {
             const response = await axios.post(
-                `${BACKEND_URL}/chatbot`,
+                `${BACKEND_URL}/rash_generator`,
                 apiReqBody,
-                { withCredentials: true }
+                { withCredentials: false }
             );
             if (response.statusText === 'OK') {
-                // console.log(response.data.message.content)
+                setImageData(response.data); // Update the state with Base64 image data
+
+                imgElement.src = `data:image/png;base64,${response.data}`;
+                document.body.appendChild(imgElement);
                 setMessages(
                     [...allMessages, {
-                        message: response.data.message.content,
+                        message: "please check below",
                         sender: "chatGPT"
                     }]
                 );
@@ -105,7 +111,6 @@ export const Rash_generator = () => {
     return (
         <div >
             <div class="robot-title">
-                <p>Hello this is Rash</p>
                 <GoDependabot size={35} class="icon" />
             </div>
             <div>
@@ -114,7 +119,7 @@ export const Rash_generator = () => {
                         <MessageList typingIndicator={typing ? <TypingIndicator /> : null}>
                             <MessageSeparator
                                 as="h2"
-                                content="Wednesday, 13 March 2024"
+                                content="Wednesday, 24 April 2024"
                             />
                             {messages.map((message, i) => {
                                 if (message.sender === "user") {
@@ -138,9 +143,11 @@ export const Rash_generator = () => {
                                 }
                             })}
                         </MessageList>
+                        {imageData && <img src={`data:image/png;base64,${imageData}`} alt="Generated Image" />}
                         <MessageInput placeholder="Type message here" onSend={handleSend} />
                     </ChatContainer>
                 </MainContainer>
+
             </div>
         </div>
     );
